@@ -26,7 +26,7 @@ jobs:
 
       - name: npm publish
         env:
-          NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_CONFIG_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           RELEASE_TAG=${GITHUB_REF/refs\/tags\/v/}
           echo $RELEASE_TAG
