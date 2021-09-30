@@ -1,3 +1,4 @@
+import fetch from 'node-fetch';
 import { BASE_URL, Endpoint } from './config';
 import { buildQueryParams } from './helper';
 import { error } from './logger';
