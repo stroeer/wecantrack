@@ -38,10 +38,7 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/@stroeer"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/stroeer/wecantrack.git"
-  },
+  "repository": "git://github.com/stroeer/wecantrack.git",
   "jest": {
     "testMatch": [
       "**/*.test.ts"
