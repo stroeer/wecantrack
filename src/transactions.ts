@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { BASE_URL } from '../';
+import { BASE_URL } from './config';
 import { buildQueryParams, convertDateToWCTDate } from './helper';
 import { error } from './logger';
 import { DateType, Link } from './types';

@@ -1,5 +1,3 @@
-export const BASE_URL = 'https://app.wecantrack.com';
-
 export {
   getTotalTransactions,
   getTransationsPage,
