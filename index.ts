@@ -1,4 +1,4 @@
-export { API } from './src/api';
+export { WeCanTrack } from './src/api';
 export { ClickoutRequestBuilder } from './src/clickout';
 export type { ClickoutData, ClickoutResponse } from './src/clickout';
 export { TransactionRequestBuilder } from './src/transactions';
