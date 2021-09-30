@@ -35,10 +35,7 @@
   "files": [
     "lib/**/*"
   ],
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/@stroeer"
-  },
-  "repository": "git://github.com/stroeer/wecantrack.git",
+  "repository": "git@github.com:stroeer/wecantrack.git",
   "jest": {
     "testMatch": [
       "**/*.test.ts"
