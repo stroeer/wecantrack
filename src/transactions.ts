@@ -1,15 +1,11 @@
-import fetch from 'node-fetch';
-import { BASE_URL } from './config';
-import { buildQueryParams, convertDateToWCTDate } from './helper';
-import { error } from './logger';
-import { DateType, Link } from './types';
+import { convertDateToWCTDate } from './helper';
+import { DateType, GeneralResponseData } from './types';
 
 const FILE: string = 'wecantrack/wct_api/transactions.ts';
-const TRANSACTIONS_SUFFIX = '/api/v3/transactions';
 
 type TransactionStatus = 'pending' | 'approved' | 'declined';
 
-export type Transaction = {
+export type TransactionData = {
   transaction_id: string;
   last_wct_update: string;
   modified_date: string;
@@ -53,23 +49,11 @@ export type Transaction = {
   };
 };
 
-export type TransactionResponse = {
-  current_page: number;
-  data: Transaction[];
-  first_page_url: string;
-  from: number;
-  last_page_url: string;
-  last_page: number;
-  links: Link[];
-  next_page_url: string;
-  path: string;
-  per_page: number;
-  prev_page_url: string;
-  to: number;
-  total: number;
+export type TransactionResponse = GeneralResponseData & {
+  data: TransactionData[];
 };
 
-type TransactionRequest = {
+export type TransactionRequest = {
   date_type: DateType;
   start_date: string;
   end_date: string;
@@ -143,48 +127,5 @@ export class TransactionRequestBuilder {
       return this.request;
     }
     return null;
-  }
-}
-
-export async function getTransationsPage(request: TransactionRequest): Promise<TransactionResponse> {
-  const source = 'getTransactions';
-  try {
-    if (request) {
-      const queryParams = buildQueryParams(request);
-      const url = BASE_URL + TRANSACTIONS_SUFFIX + '?' + queryParams;
-      const result = await fetch(url, {
-        headers: {
-          'X-API-Key': process.env.WCT_KEY,
-        },
-      });
-      return (await result.json()) as TransactionResponse;
-    } else {
-      error(`${FILE} - ${source}`);
-    }
-  } catch (e) {
-    error(`${FILE} - ${source}`, e);
-  }
-}
-
-export async function getTotalTransactions(request: TransactionRequest): Promise<Transaction[]> {
-  const source = 'getTransactions';
-  try {
-    const page1 = await getTransationsPage(request);
-    const pages = await Promise.all(
-      page1.links
-        .filter((l) => parseInt(l.label, 10) && parseInt(l.label, 10) > 1)
-        .map(async (l): Promise<TransactionResponse> => {
-          const page = await fetch(l.url, {
-            headers: {
-              'X-API-Key': process.env.WCT_KEY,
-            },
-          });
-          return (await page.json()) as TransactionResponse;
-        }),
-    );
-    const result = page1.data.concat(...pages.map((p) => p.data));
-    return result;
-  } catch (e) {
-    error(`${FILE} - ${source}`, e);
   }
 }

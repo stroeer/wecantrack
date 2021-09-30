@@ -30,7 +30,8 @@
     "typescript": "^4.4.3"
   },
   "dependencies": {
-    "node-fetch": "^3.0.0"
+    "node-fetch": "^3.0.0",
+    "typescript-tslint-plugin": "^1.0.1"
   },
   "files": [
     "lib/**/*"
