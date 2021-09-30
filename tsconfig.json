@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
+    "target": "ES5",
+    "module": "CommonJS",
     "declaration": true,
     "outDir": "./lib",
     "strict": false,
-    "plugins": [{ "name": "typescript-tslint-plugin" }]
+    "plugins": [{ "name": "typescript-tslint-plugin" }],
+    "moduleResolution": "node"
   },
   "include": ["src", "index.ts"],
   "exclude": ["node_modules", "./lib"]
