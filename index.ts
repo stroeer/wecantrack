@@ -1,7 +1,3 @@
-export {
-  getTotalTransactions,
-  getTransationsPage,
-  Transaction,
-  TransactionRequestBuilder,
-  TransactionResponse,
-} from './src/transactions';
+export { API } from './src/api';
+export { TransactionRequestBuilder } from './src/transactions';
+export type { Transaction, TransactionResponse } from './src/transactions';

@@ -69,7 +69,7 @@ export type TransactionResponse = {
   total: number;
 };
 
-type TransactionRequest = {
+export type TransactionRequest = {
   date_type: DateType;
   start_date: string;
   end_date: string;
@@ -146,7 +146,7 @@ export class TransactionRequestBuilder {
   }
 }
 
-export async function getTransationsPage(request: TransactionRequest): Promise<TransactionResponse> {
+export async function getTransationsPage(request: TransactionRequest, key: string): Promise<TransactionResponse> {
   const source = 'getTransactions';
   try {
     if (request) {
@@ -154,7 +154,7 @@ export async function getTransationsPage(request: TransactionRequest): Promise<T
       const url = BASE_URL + TRANSACTIONS_SUFFIX + '?' + queryParams;
       const result = await fetch(url, {
         headers: {
-          'X-API-Key': process.env.WCT_KEY,
+          'X-API-Key': key,
         },
       });
       return (await result.json()) as TransactionResponse;
@@ -166,17 +166,17 @@ export async function getTransationsPage(request: TransactionRequest): Promise<T
   }
 }
 
-export async function getTotalTransactions(request: TransactionRequest): Promise<Transaction[]> {
+export async function getTotalTransactions(request: TransactionRequest, key: string): Promise<Transaction[]> {
   const source = 'getTransactions';
   try {
-    const page1 = await getTransationsPage(request);
+    const page1 = await getTransationsPage(request, key);
     const pages = await Promise.all(
       page1.links
         .filter((l) => parseInt(l.label, 10) && parseInt(l.label, 10) > 1)
         .map(async (l): Promise<TransactionResponse> => {
           const page = await fetch(l.url, {
             headers: {
-              'X-API-Key': process.env.WCT_KEY,
+              'X-API-Key': key,
             },
           });
           return (await page.json()) as TransactionResponse;

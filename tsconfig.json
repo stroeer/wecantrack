@@ -4,8 +4,9 @@
     "module": "commonjs",
     "declaration": true,
     "outDir": "./lib",
-    "strict": false
+    "strict": false,
+    "plugins": [{ "name": "typescript-tslint-plugin" }]
   },
-  "include": ["src", "./index.ts"],
+  "include": ["src", "index.ts"],
   "exclude": ["node_modules", "./lib"]
 }
