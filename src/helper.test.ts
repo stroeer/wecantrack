@@ -1,4 +1,4 @@
-import { add, buildQueryParams, convertDateToWCTDate } from './helper';
+import { add, buildQueryParams, convertDateToWCTDate, range } from './helper';
 
 describe('The wecantrack API helper', () => {
   describe('The datetime converter', () => {
@@ -34,6 +34,23 @@ describe('The wecantrack API helper', () => {
     it('should returln element if list is null', () => {
       const result = add('b', null);
       expect(result).toBe('b');
+    });
+  });
+
+  describe('Array range should return an array with number in given range', () => {
+    it('should return simple range from 1 to 5', () => {
+      const result = range(1, 5);
+      expect(result).toEqual([1, 2, 3, 4, 5]);
+    });
+
+    it('should handle 1 page result', () => {
+      const result = range(2, 1);
+      expect(result).toEqual([]);
+    });
+
+    it('can handle undefined', () => {
+      const result = range(2, undefined);
+      expect(result).toEqual([]);
     });
   });
 });

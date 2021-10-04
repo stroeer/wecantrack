@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import { BASE_URL, Endpoint } from './config';
-import { buildQueryParams } from './helper';
+import { buildQueryParams, range } from './helper';
 import { error } from './logger';
 import { GeneralResponseData } from './types';
 
@@ -76,12 +76,6 @@ export async function getAllPages<T extends GeneralResponseData>(
     error('It was not possible to fetch all pages', e);
   }
 }
-
-const range = (start: number, end: number): number[] => {
-  return Array(end - start + 1)
-    .fill(0)
-    .map((_, idx) => start + idx);
-};
 
 const isPageRequest = (request: object): boolean => {
   return Object.keys(request).includes('page');

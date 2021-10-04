@@ -39,3 +39,10 @@ export function convertDateToWCTDate(date: Date): WCTDate {
 export function add(element: string, to: string): string {
   return to ? `${to},${element}` : element;
 }
+
+export const range = (start: number, end: number): number[] => {
+  if (!end) return [];
+  return Array(end - start + 1)
+    .fill(0)
+    .map((_, idx) => start + idx);
+};
