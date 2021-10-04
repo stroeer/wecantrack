@@ -37,6 +37,7 @@ export class ClickoutRequestBuilder {
   constructor() {
     this.request = {
       last_clicks: null,
+      page: 1,
     };
   }
 

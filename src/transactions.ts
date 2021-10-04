@@ -73,6 +73,7 @@ export class TransactionRequestBuilder {
       date_type: null,
       end_date: null,
       start_date: null,
+      page: 1,
       status: [],
     };
   }

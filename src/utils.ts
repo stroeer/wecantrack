@@ -57,21 +57,32 @@ export async function getAllPages<T extends GeneralResponseData>(
 ): Promise<T['data']> {
   try {
     const firstPage = await getSinglePage(request, endpoint, key);
-    const pages = await Promise.all(
-      firstPage.links
-        .filter((l) => parseInt(l.label, 10) && parseInt(l.label, 10) > 1)
-        .map(async (l): Promise<T> => {
-          const page = await fetch(l.url, {
-            headers: {
-              'X-API-Key': key,
-            },
-          });
-          return (await page.json()) as T;
+    let result = null;
+    if (isPageRequest(request)) {
+      const nrOfPages = firstPage.last_page;
+      const pages = await Promise.all(
+        range(2, nrOfPages).map(async (l): Promise<T> => {
+          const req = Object.assign({}, request) as object & { page: number };
+          req.page = l;
+          return await getSinglePage(req, endpoint, key);
         }),
-    );
-    const result = firstPage.data.concat(...pages.map((p) => p.data)) as T['data'];
+      );
+      result = firstPage.data.concat(...pages.map((p) => p.data)) as T['data'];
+    } else {
+      result = firstPage.data as T['data'];
+    }
     return result;
   } catch (e) {
     error('It was not possible to fetch all pages', e);
   }
 }
+
+const range = (start: number, end: number): number[] => {
+  return Array(end - start + 1)
+    .fill(0)
+    .map((_, idx) => start + idx);
+};
+
+const isPageRequest = (request: object): boolean => {
+  return Object.keys(request).includes('page');
+};
