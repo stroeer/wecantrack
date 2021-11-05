@@ -6,10 +6,10 @@ import { TransactionData, TransactionRequest, TransactionResponse } from './tran
 import { getAllPages, getArrayPage, getSinglePage } from './utils';
 
 export class WeCanTrack {
-  constructor(private key: string) {}
+  constructor(private key: string) { }
 
   async transactionsPage(request: TransactionRequest): Promise<TransactionResponse> {
-    return getSinglePage(request, Endpoint.TRANSACTIONS, this.key);
+    return getSinglePage(request, Endpoint.TRANSACTIONS, this.key)[0];
   }
 
   async transactionsTotal(request: TransactionRequest): Promise<TransactionData[]> {
@@ -17,7 +17,7 @@ export class WeCanTrack {
   }
 
   async clickoutsPage(request: ClickoutRequest): Promise<ClickoutResponse> {
-    return getSinglePage(request, Endpoint.CLICKOUTS, this.key);
+    return getSinglePage(request, Endpoint.CLICKOUTS, this.key)[0];
   }
 
   async clickoutsTotal(request: ClickoutRequest): Promise<ClickoutData[]> {

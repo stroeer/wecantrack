@@ -30,7 +30,7 @@ export async function getSinglePage<T extends GeneralResponseData>(
   request: object,
   endpoint: Endpoint,
   key: string,
-): Promise<T> {
+): Promise<[T, number]> {
   const source = 'getSinglePage';
   try {
     if (request) {
@@ -41,7 +41,9 @@ export async function getSinglePage<T extends GeneralResponseData>(
           'X-API-Key': key,
         },
       });
-      return (await result.json()) as T;
+      const body = await result.json() as T
+      const remainingRateLimit = parseInt(result.headers.get('X-RateLimit-Remaining'), 10) ?? 0
+      return [body, remainingRateLimit]
     } else {
       error(`${FILE} - ${source}`);
     }
@@ -56,15 +58,15 @@ export async function getAllPages<T extends GeneralResponseData>(
   key: string,
 ): Promise<T['data']> {
   try {
-    const firstPage = await getSinglePage(request, endpoint, key);
+    const [firstPage, remaining] = await getSinglePage(request, endpoint, key);
     let result = null;
     if (isPageRequest(request)) {
-      const nrOfPages = firstPage.last_page;
+      const nrOfPages = firstPage.last_page > remaining ? remaining : firstPage.last_page
       const pages = await Promise.all(
         range(2, nrOfPages).map(async (l): Promise<T> => {
           const req = Object.assign({}, request) as object & { page: number };
           req.page = l;
-          return await getSinglePage(req, endpoint, key);
+          return await getSinglePage(req, endpoint, key)[0];
         }),
       );
       result = firstPage.data.concat(...pages.map((p) => p.data)) as T['data'];

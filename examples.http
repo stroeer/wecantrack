@@ -1,0 +1,10 @@
+# Transactions API
+GET https://app.wecantrack.com/api/v3/transactions?date_type=order_date&start_date=2021-09-21T00:00:00&end_date=2021-09-23T00:00:00
+X-API-Key:{{ENV_WCT_KEY}}
+
+# Aggregation API
+GET https://app.wecantrack.com/api/v2/clicks/aggregation?last_clicks=10000&order_by=commissions&group_by=custom_index_2&limit=100
+X-API-Key:{{ENV_WCT_KEY}}
+
+
+
